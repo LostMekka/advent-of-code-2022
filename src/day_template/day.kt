@@ -4,12 +4,11 @@ import util.readInput
 import util.shouldBe
 
 fun main() {
-    val day = 0 // TODO
-    val testInput = readInput(day, testInput = true).parseInput()
+    val testInput = readInput(Input::class, testInput = true).parseInput()
     part1(testInput) shouldBe 1 // TODO
     part2(testInput) shouldBe 1 // TODO
 
-    val input = readInput(day).parseInput()
+    val input = readInput(Input::class).parseInput()
     println("output for part1: ${part1(input)}")
     println("output for part2: ${part2(input)}")
 }
