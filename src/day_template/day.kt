@@ -5,12 +5,12 @@ import util.shouldBe
 
 fun main() {
     val testInput = readInput(Input::class, testInput = true).parseInput()
-    part1(testInput) shouldBe 1 // TODO
-    part2(testInput) shouldBe 1 // TODO
+    testInput.part1() shouldBe 1 // TODO
+    testInput.part2() shouldBe 1 // TODO
 
     val input = readInput(Input::class).parseInput()
-    println("output for part1: ${part1(input)}")
-    println("output for part2: ${part2(input)}")
+    println("output for part1: ${input.part1()}")
+    println("output for part2: ${input.part2()}")
 }
 
 private class Input(
@@ -21,10 +21,10 @@ private fun List<String>.parseInput(): Input {
     return Input(this)
 }
 
-private fun part1(input: Input): Int {
+private fun Input.part1(): Int {
     return 1 // TODO
 }
 
-private fun part2(input: Input): Int {
+private fun Input.part2(): Int {
     return 1 // TODO
 }
