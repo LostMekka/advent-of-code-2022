@@ -13,6 +13,11 @@ data class PathFindingNode<T: PathFindingState<T>>(
 data class PathFindingMove<T: PathFindingState<T>>(val cost: Long, val state: T)
 data class PathFindingPath<T: PathFindingState<T>>(val nodes: List<PathFindingNode<T>>, val totalCost: Long)
 
+/**
+ * Implementing classes **MUST** properly implement [equals] and [hashCode].
+ * Failure to do so will result in endless loops,
+ * since the path finding algorithm will have no way to tell whether a certain state was seen before.
+ */
 interface PathFindingState<T: PathFindingState<T>> {
     fun nextMoves(): Sequence<PathFindingMove<T>>
     fun estimatedCostToGo(): Long
