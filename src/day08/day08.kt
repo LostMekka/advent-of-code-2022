@@ -27,7 +27,7 @@ private class Input(
 )
 
 private fun List<String>.parseInput(): Input {
-    return Input(toGrid { Tree(it.digitToInt()) })
+    return Input(toGrid { _, _, it -> Tree(it.digitToInt()) })
 }
 
 private fun computeVisibility(trees: List<Tree>) {

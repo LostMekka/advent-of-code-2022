@@ -55,11 +55,12 @@ class Grid<T>(val width: Int, val height: Int, init: (Point) -> T) {
         }
     }
 
+    @Suppress("unused")
     fun debugString(cellConverter: (T) -> String) =
         rows().joinToString("\n") {
             it.joinToString("", transform = cellConverter)
         }
 }
 
-fun <T> List<String>.toGrid(cellTransform: (Char) -> T) =
-    Grid(first().length, size) { (x, y) -> cellTransform(this[y][x]) }
+fun <T> List<String>.toGrid(cellTransform: (x: Int, y: Int, char: Char) -> T) =
+    Grid(first().length, size) { (x, y) -> cellTransform(x, y, this[y][x]) }
