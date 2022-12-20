@@ -86,3 +86,40 @@ class PeekingIterator<T>(iterable: Iterable<T>): Iterator<T> {
 fun <T> Iterable<T>.peekingIterator() = PeekingIterator(this)
 
 fun <T> Iterator<T>.nextOrNull() = if (hasNext()) next() else null
+
+fun <T> Collection<T>.allSamplings(
+    sampleCount: Int,
+    allowDuplicates: Boolean,
+    includePartials: Boolean,
+) = sequence {
+    val size = when {
+        isEmpty() -> return@sequence
+        allowDuplicates -> sampleCount
+        size >= sampleCount -> sampleCount
+        !includePartials -> return@sequence
+        else -> size
+    }
+    // this array is a counter. each element represents a digit.
+    val iterators = Array(size) { peekingIterator() }
+
+    while (true) {
+        // yield the current state
+        val samples = iterators.map { it.current() }
+        if (allowDuplicates || samples.toSet().size == size) yield(samples)
+
+        // add one to our counter.
+        // if one digit overflows, reset it and increment the next digit.
+        // if all digits overflow, we are done.
+        var i = 0
+        while (true) {
+            val iterator = iterators[i]
+            if (iterator.hasNext()) {
+                iterator.next()
+                break
+            }
+            iterators[i] = peekingIterator()
+            i++
+            if (i !in iterators.indices) return@sequence
+        }
+    }
+}
