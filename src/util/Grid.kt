@@ -5,6 +5,10 @@ class Grid<T>(val width: Int, val height: Int, init: (Point) -> T) {
     private fun index(x: Int, y: Int) = x + y * width
     private fun index(p: Point) = p.x + p.y * width
     private fun point(i: Int) = Point(i % width, i / width)
+
+    val xRange = 0 until width
+    val yRange = 0 until height
+
     operator fun get(x: Int, y: Int) = items[index(x, y)]
     operator fun get(p: Point) = items[index(p)]
     operator fun set(x: Int, y: Int, value: T) {
@@ -14,13 +18,12 @@ class Grid<T>(val width: Int, val height: Int, init: (Point) -> T) {
         items[index(p)] = value
     }
 
-    operator fun contains(p: Point) =
-        p.x in 0 until width && p.y in 0 until height
+    operator fun contains(p: Point) = p.x in xRange && p.y in yRange
 
     fun positions() = Iterable {
         iterator {
-            for (x in 0 until width) {
-                for (y in 0 until height) {
+            for (x in xRange) {
+                for (y in yRange) {
                     yield(Point(x, y))
                 }
             }
@@ -29,27 +32,27 @@ class Grid<T>(val width: Int, val height: Int, init: (Point) -> T) {
 
     fun values() = Iterable {
         iterator {
-            for (x in 0 until width) {
-                for (y in 0 until height) {
+            for (x in xRange) {
+                for (y in yRange) {
                     yield(items[index(x, y)])
                 }
             }
         }
     }
 
-    fun row(y: Int) = (0 until width).map { x -> get(x, y) }
+    fun row(y: Int) = xRange.map { x -> get(x, y) }
     fun rows() = Iterable {
         iterator {
-            for (y in 0 until height) {
+            for (y in yRange) {
                 yield(row(y))
             }
         }
     }
 
-    fun column(x: Int) = (0 until height).map { y -> get(x, y) }
+    fun column(x: Int) = yRange.map { y -> get(x, y) }
     fun columns() = Iterable {
         iterator {
-            for (x in 0 until width) {
+            for (x in xRange) {
                 yield(column(x))
             }
         }
