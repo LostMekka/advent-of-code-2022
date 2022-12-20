@@ -74,3 +74,15 @@ inline fun <T1, T2, T3, R> crossProductOf(
         }
     }
 }
+
+class PeekingIterator<T>(iterable: Iterable<T>): Iterator<T> {
+    private val cursor = iterable.iterator()
+    private var current = cursor.next()
+    fun current() = current
+    override fun next() = cursor.next().also { current = it }
+    override fun hasNext() = cursor.hasNext()
+}
+
+fun <T> Iterable<T>.peekingIterator() = PeekingIterator(this)
+
+fun <T> Iterator<T>.nextOrNull() = if (hasNext()) next() else null
