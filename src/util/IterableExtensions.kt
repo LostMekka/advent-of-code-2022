@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package util
 
 operator fun <T> List<T>.component6() = this[5]
@@ -123,3 +125,22 @@ fun <T> Collection<T>.allSamplings(
         }
     }
 }
+
+class RepeatingIterator<T>(private val subject: List<T>) : Iterator<T> {
+    private lateinit var inner: Iterator<T>
+    private var nextIndex = 0
+    private val size = subject.size
+
+    fun nextIndex() = nextIndex
+    fun lastIndex() = (nextIndex + size - 1) % size
+
+    override fun hasNext() = size > 0
+
+    override fun next(): T {
+        if (nextIndex == 0) inner = subject.iterator()
+        nextIndex = (nextIndex + 1) % size
+        return inner.next()
+    }
+}
+
+fun <T> List<T>.repeatingIterator() = RepeatingIterator(this)
