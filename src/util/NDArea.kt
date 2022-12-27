@@ -1,3 +1,5 @@
+@file:Suppress("unused", "MemberVisibilityCanBePrivate")
+
 package util
 
 interface NDArea<T : NDArea<T, TPoint>, TPoint> : Iterable<TPoint> {
@@ -21,7 +23,6 @@ infix fun IntRange.intersect(other: IntRange): IntRange? {
 operator fun IntRange.contains(other: IntRange) = other.first in this && other.last in this
 
 //////// 2D Area ///////////
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 class Rect(x1: Int, y1: Int, x2: Int, y2: Int) : NDArea<Rect, Point> {
     constructor(p1: Point, p2: Point) : this(p1.x, p1.y, p2.x, p2.y)
     constructor(xRange: IntRange, yRange: IntRange) : this(xRange.first, yRange.first, xRange.last, yRange.last)
@@ -70,7 +71,6 @@ fun Iterable<Point>.boundingRect(): Rect {
 }
 
 //////// 3D Area ///////////
-@Suppress("unused", "MemberVisibilityCanBePrivate")
 class Cuboid(x1: Int, y1: Int, z1: Int, x2: Int, y2: Int, z2: Int) : NDArea<Cuboid, Point3> {
     constructor(p1: Point3, p2: Point3) : this(p1.x, p1.y, p1.z, p2.x, p2.y, p2.z)
     constructor(xRange: IntRange, yRange: IntRange, zRange: IntRange) : this(xRange.first,
@@ -110,6 +110,18 @@ class Cuboid(x1: Int, y1: Int, z1: Int, x2: Int, y2: Int, z2: Int) : NDArea<Cubo
         val newYRange = yRange.intersect(other.yRange) ?: return null
         val newZRange = zRange.intersect(other.zRange) ?: return null
         return Cuboid(newXRange, newYRange, newZRange)
+    }
+
+    fun growBy(borderSize: Int): Cuboid {
+        require(borderSize > 0)
+        return Cuboid(
+            minX - borderSize,
+            maxX + borderSize,
+            minY - borderSize,
+            maxY + borderSize,
+            minZ - borderSize,
+            maxZ + borderSize,
+        )
     }
 }
 
