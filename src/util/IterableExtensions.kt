@@ -144,3 +144,11 @@ class RepeatingIterator<T>(private val subject: List<T>) : Iterator<T> {
 }
 
 fun <T> List<T>.repeatingIterator() = RepeatingIterator(this)
+
+fun <T> Sequence<T>.skipEvery(n: Int) = sequence {
+    val iterator = this@skipEvery.iterator()
+    while (true) {
+        repeat(n) { iterator.nextOrNull() ?: return@sequence }
+        iterator.nextOrNull()?.let { yield(it) } ?: return@sequence
+    }
+}
