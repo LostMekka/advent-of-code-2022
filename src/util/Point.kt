@@ -1,3 +1,5 @@
+@file:Suppress("unused")
+
 package util
 
 import kotlin.math.abs
@@ -8,6 +10,9 @@ data class Point(val x: Int, val y: Int) {
     infix fun manhattanDistanceTo(other: Point) = abs(x - other.x) + abs(y - other.y)
 
     override fun toString() = "($x, $y)"
+
+    fun rotateLeftAround(pivot: Point) = Point(pivot.x + y - pivot.y, pivot.y - x + pivot.x)
+    fun rotateRightAround(pivot: Point) = Point(pivot.x - y + pivot.y, pivot.y + x - pivot.x)
 
     fun neighbours() =
         listOf(
